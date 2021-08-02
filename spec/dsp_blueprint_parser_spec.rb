@@ -1,22 +1,18 @@
 # frozen_string_literal: true
 
 RSpec.describe DspBlueprintParser do
-  let(:blue_string) do
-    File.read('spec/fixtures/blueprint.txt')
-  end
-
-  let(:blueprint) do
-    DspBlueprintParser.parse(blue_string)
+  before(:all) do
+    @blueprint = DspBlueprintParser.parse(File.read('spec/fixtures/blueprint.txt'))
   end
 
   describe 'correct number of areas parsed' do
-    subject { blueprint }
+    subject { @blueprint }
     its(:areas) { is_expected.to all(be_a(DspBlueprintParser::Area)) }
     its(:areas) { is_expected.to have_attributes(size: 1) }
   end
 
   describe 'area is parsed correctly' do
-    subject { blueprint.areas.first }
+    subject { @blueprint.areas.first }
     its(:anchor_local_offset_x) { is_expected.to be(0) }
     its(:anchor_local_offset_y) { is_expected.to be(0) }
     its(:area_segments) { is_expected.to be(200) }
@@ -28,13 +24,13 @@ RSpec.describe DspBlueprintParser do
   end
 
   describe 'correct number of buildings parsed' do
-    subject { blueprint }
+    subject { @blueprint }
     its(:buildings) { is_expected.to all(be_a(DspBlueprintParser::Building)) }
     its(:buildings) { is_expected.to have_attributes(size: 1119) }
   end
 
   describe 'building is parsed correctly' do
-    subject { blueprint.buildings.first }
+    subject { @blueprint.buildings.first }
     its(:index) { is_expected.to be(0) }
     its(:area_index) { is_expected.to be(0) }
     its(:local_offset_x) { is_expected.to be_within(0.01).of(3.999) }
@@ -60,7 +56,7 @@ RSpec.describe DspBlueprintParser do
   end
 
   describe 'metadata is parsed correctly' do
-    subject { blueprint }
+    subject { @blueprint }
     its(:icon_layout) { is_expected.to be(32) }
     its(:icon0) { is_expected.to be(1126) }
     its(:icon1) { is_expected.to be(2003) }
