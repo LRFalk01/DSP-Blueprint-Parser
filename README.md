@@ -25,7 +25,7 @@ Or install it yourself as:
 Module `DspBlueprintParser` has a single static method `parse` which takes the DSP blueprint string to be parsed.
 
 ```ruby
-DspBlueprintParser::parse(str_blueprint)
+DspBlueprintParser.parse(str_blueprint)
 ```
 
 This method returns a [BlueprintData](https://github.com/LRFalk01/DSP-Blueprint-Parser/blob/master/lib/dsp_blueprint_parser/blueprint_data.rb) object which includes the various metadata of the blueprint.
