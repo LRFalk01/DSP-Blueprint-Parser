@@ -2,6 +2,8 @@
 
 Small Ruby gem to handle parsing of Dyson Sphere Program's blueprint data.
 
+Currently the gem does not support validating the MD5 hash of the blueprint. It appears as if the DSP devs wrote their own MD5 algorithm which would need it's own Ruby port. 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -25,6 +27,9 @@ Module `DspBlueprintParser` has a single static method `parse` which takes the D
 ```ruby
 DspBlueprintParser::parse(str_blueprint)
 ```
+
+This method returns a [BlueprintData](https://github.com/LRFalk01/DSP-Blueprint-Parser/blob/master/lib/dsp_blueprint_parser/blueprint_data.rb) object which includes the various metadata of the blueprint.
+Part of the `BlueprintData` object are properties for [areas](https://github.com/LRFalk01/DSP-Blueprint-Parser/blob/master/lib/dsp_blueprint_parser/area.rb) and [buildings](https://github.com/LRFalk01/DSP-Blueprint-Parser/blob/master/lib/dsp_blueprint_parser/building.rb) which are what one would mostly be interested in further evaluating.
 
 ## Development
 
