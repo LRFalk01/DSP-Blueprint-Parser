@@ -123,8 +123,14 @@ module DspBlueprintParser
 
       blueprint.time = ticks_to_epoch(header_segments[8].to_i)
       blueprint.game_version = header_segments[9]
-      blueprint.short_description = CGI.unescape(header_segments[10])
-      blueprint.description = CGI.unescape(header_segments[11])
+
+      if header_segments[10]
+        blueprint.short_description = CGI.unescape(header_segments[10])
+      end
+
+      if header_segments[11]
+        blueprint.description = CGI.unescape(header_segments[11])
+      end
 
       blueprint.version = reader.read_i32
       blueprint.cursor_offset_x = reader.read_i32
