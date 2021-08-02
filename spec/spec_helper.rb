@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "dsp_blueprint_parser"
+require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
