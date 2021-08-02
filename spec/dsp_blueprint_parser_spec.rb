@@ -74,5 +74,9 @@ RSpec.describe DspBlueprintParser do
     its(:drag_box_size_x) { is_expected.to be(31) }
     its(:drag_box_size_y) { is_expected.to be(33) }
     its(:primary_area_idx) { is_expected.to be(0) }
+    its(:time) { is_expected.to eql(Time.new(2021, 8, 1, 11, 11, 0, '-04:00')) }
+    its(:game_version) { is_expected.to eql('0.8.19.7757') }
+    its(:short_description) { is_expected.to eql('Casimir Crystal Compact') }
+    its(:description) { is_expected.to eql('Tiny, but fierce!') }
   end
 end
