@@ -56,10 +56,9 @@ module DspBlueprintParser
     blueprint.primary_area_idx = reader.read_i32
 
     area_length = reader.read_i8
-    area_index = 0
     blueprint.areas = Array.new
 
-    while area_index < area_length
+    while area_length > 0
       area = Area.new
       area.index = reader.read_i8
       area.parent_index = reader.read_i8
@@ -70,8 +69,48 @@ module DspBlueprintParser
       area.width = reader.read_i16
       area.height = reader.read_i16
 
-      blueprint.areas[area_index] = area
-      area_index += 1
+      blueprint.areas << area
+      area_length -= 1
+    end
+
+    building_length = reader.read_i32
+    blueprint.buildings = Array.new
+
+    while building_length > 0
+      building = Building.new
+      building.index = reader.read_i32
+      building.area_index = reader.read_i8
+      building.local_offset_x = reader.read_single
+      building.local_offset_y = reader.read_single
+      building.local_offset_z = reader.read_single
+      building.local_offset_x2 = reader.read_single
+      building.local_offset_y2 = reader.read_single
+      building.local_offset_z2 = reader.read_single
+      building.yaw = reader.read_single
+      building.yaw2 = reader.read_single
+      building.item_id = reader.read_i16
+      building.model_index = reader.read_i16
+      building.temp_output_obj_idx = reader.read_i32
+      building.temp_input_obj_idx = reader.read_i32
+      building.input_to_slot = reader.read_i8
+      building.output_from_slot = reader.read_i8
+      building.output_to_slot = reader.read_i8
+      building.input_from_slot = reader.read_i8
+      building.output_offset = reader.read_i8
+      building.input_offset = reader.read_i8
+      building.recipe_id = reader.read_i16
+      building.filter_fd = reader.read_i16
+
+      param_length = reader.read_i16
+      building.parameters = Array.new
+
+      while param_length > 0
+        building.parameters << reader.read_i32
+        param_length -= 1
+      end
+
+      blueprint.buildings << building
+      building_length -= 1
     end
 
     binding.pry
@@ -85,8 +124,4 @@ module DspBlueprintParser
 
     Time.at(seconds - SECONDS_AT_EPOC)
   end
-
-  # Your code goes here...
-  #
-  #
 end

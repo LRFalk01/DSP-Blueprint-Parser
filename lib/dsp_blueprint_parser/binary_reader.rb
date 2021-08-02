@@ -18,6 +18,10 @@ module DspBlueprintParser
       get_integer(1, 'c')
     end
 
+    def read_single
+      get_integer(4, 'e')
+    end
+
     private
     # @param byte_count [Integer]
     # @return [String]
