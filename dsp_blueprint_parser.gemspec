@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = "Parse Dyson Sphere Program blueprint string"
   # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
-  spec.required_ruby_version = ">= 2.4.0"
+  spec.required_ruby_version = ">= 3.0"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 

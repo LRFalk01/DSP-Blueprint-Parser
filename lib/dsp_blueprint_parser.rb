@@ -96,16 +96,16 @@ module DspBlueprintParser
     blueprint
   end
 
+  private
+
   # @param ticks [Integer]
-  # @return [DateTime]
+  # @return [Time]
   def self.ticks_to_epoch(ticks)
     # 10mil ticks per second
     seconds = ticks / 10_000_000
 
     Time.at(seconds - SECONDS_AT_EPOC)
   end
-
-  private
 
   # @param str_blueprint [String]
   # @return [Array<String>]
