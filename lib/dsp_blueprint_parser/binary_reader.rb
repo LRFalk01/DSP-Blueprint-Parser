@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module DspBlueprintParser
+  # class to manage the position of byte array while parsing data out of it
   class BinaryReader
     # @param data [Array<byte>]
     def initialize(data)
@@ -23,6 +26,7 @@ module DspBlueprintParser
     end
 
     private
+
     # @param byte_count [Integer]
     # @return [String]
     def get_string(byte_count)
@@ -36,7 +40,7 @@ module DspBlueprintParser
     # @param format [String]
     # @return [Integer]
     def get_integer(byte_count, format)
-      get_string(byte_count).unpack(format)[0]
+      get_string(byte_count).unpack1(format)
     end
   end
 end

@@ -1,18 +1,20 @@
 # frozen_string_literal: true
+
 require 'date'
-require "zlib"
+require 'zlib'
 require 'stringio'
 require 'base64'
 
-require_relative "dsp_blueprint_parser/version"
-require_relative "dsp_blueprint_parser/blueprint_data"
-require_relative "dsp_blueprint_parser/icon_layout"
-require_relative "dsp_blueprint_parser/area"
-require_relative "dsp_blueprint_parser/building"
+require_relative 'dsp_blueprint_parser/version'
+require_relative 'dsp_blueprint_parser/blueprint_data'
+require_relative 'dsp_blueprint_parser/icon_layout'
+require_relative 'dsp_blueprint_parser/area'
+require_relative 'dsp_blueprint_parser/building'
 require_relative 'dsp_blueprint_parser/binary_reader'
 
+# module to receive a Dyson Sphere Program blueprint string and parse it
 module DspBlueprintParser
-  SECONDS_AT_EPOC = 62135596800.freeze
+  SECONDS_AT_EPOC = 62_135_596_800
 
   class Error < StandardError; end
 
@@ -92,11 +94,8 @@ module DspBlueprintParser
       blueprint.buildings << building
     end
 
-    binding.pry
     blueprint
   end
-
-  private
 
   # @param ticks [Integer]
   # @return [Time]
@@ -119,7 +118,7 @@ module DspBlueprintParser
   # @return [BinaryReader]
   def self.get_reader(str_blueprint)
     header_end = str_blueprint.index('"')
-    blueprint_end = str_blueprint[header_end + 1..-1].index('"') + header_end
+    blueprint_end = str_blueprint[header_end + 1..].index('"') + header_end
     blueprint_compressed = str_blueprint[header_end + 1..blueprint_end]
 
     gz = Zlib::GzipReader.new(StringIO.new(Base64.decode64(blueprint_compressed)))

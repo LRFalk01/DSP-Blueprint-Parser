@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module DspBlueprintParser
+  # data class for parsed blueprint
   class BlueprintData
     def initialize
-      @areas = Array.new
-      @buildings = Array.new
+      @areas = []
+      @buildings = []
     end
 
     # @return [DateTime]
