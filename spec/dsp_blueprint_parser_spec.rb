@@ -9,13 +9,13 @@ RSpec.describe DspBlueprintParser do
     DspBlueprintParser.parse(blue_string)
   end
 
-  describe  'correct number of areas parsed' do
+  describe 'correct number of areas parsed' do
     subject { blueprint }
     its(:areas) { is_expected.to all(be_a(DspBlueprintParser::Area)) }
     its(:areas) { is_expected.to have_attributes(size: 1) }
   end
 
-  describe  'area is parsed correcting' do
+  describe 'area is parsed correctly' do
     subject { blueprint.areas.first }
     its(:anchor_local_offset_x) { is_expected.to be(0) }
     its(:anchor_local_offset_y) { is_expected.to be(0) }
@@ -27,13 +27,13 @@ RSpec.describe DspBlueprintParser do
     its(:tropic_anchor) { is_expected.to be(0) }
   end
 
-  describe  'correct number of buildings parsed' do
+  describe 'correct number of buildings parsed' do
     subject { blueprint }
     its(:buildings) { is_expected.to all(be_a(DspBlueprintParser::Building)) }
     its(:buildings) { is_expected.to have_attributes(size: 1119) }
   end
 
-  describe  'building is parsed correcting' do
+  describe 'building is parsed correctly' do
     subject { blueprint.buildings.first }
     its(:index) { is_expected.to be(0) }
     its(:area_index) { is_expected.to be(0) }
@@ -57,5 +57,22 @@ RSpec.describe DspBlueprintParser do
     its(:input_offset) { is_expected.to be(0) }
     its(:recipe_id) { is_expected.to be(0) }
     its(:filter_fd) { is_expected.to be(0) }
+  end
+
+  describe 'metadata is parsed correctly' do
+    subject { blueprint }
+    its(:icon_layout) { is_expected.to be(32) }
+    its(:icon0) { is_expected.to be(1126) }
+    its(:icon1) { is_expected.to be(2003) }
+    its(:icon2) { is_expected.to be(2212) }
+    its(:icon3) { is_expected.to be(0) }
+    its(:icon4) { is_expected.to be(0) }
+    its(:version) { is_expected.to be(1) }
+    its(:cursor_offset_x) { is_expected.to be(15) }
+    its(:cursor_offset_y) { is_expected.to be(16) }
+    its(:cursor_target_area) { is_expected.to be(0) }
+    its(:drag_box_size_x) { is_expected.to be(31) }
+    its(:drag_box_size_y) { is_expected.to be(33) }
+    its(:primary_area_idx) { is_expected.to be(0) }
   end
 end
