@@ -18,6 +18,7 @@ module DspBlueprintParser
   class Error < StandardError; end
 
   # @param str_blueprint [String]
+  # @return [BlueprintData]
   def self.parse(str_blueprint)
     return if str_blueprint.size < 28
     return unless str_blueprint.start_with? 'BLUEPRINT:'
