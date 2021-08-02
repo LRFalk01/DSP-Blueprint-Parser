@@ -1,5 +1,10 @@
 module DspBlueprintParser
   class BlueprintData
+    def initialize
+      @areas = Array.new
+      @buildings = Array.new
+    end
+
     # @return [DateTime]
     attr_accessor :time
 

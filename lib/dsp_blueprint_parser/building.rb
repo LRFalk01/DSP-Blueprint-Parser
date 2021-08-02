@@ -1,5 +1,9 @@
 module DspBlueprintParser
     class Building
+        def initialize
+            @parameters = Array.new
+        end
+
         # @return [Integer]
         attr_accessor :index
 

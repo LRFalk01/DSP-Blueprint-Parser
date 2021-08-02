@@ -21,11 +21,8 @@ module DspBlueprintParser
     return if str_blueprint.size < 28
     return unless str_blueprint.start_with? 'BLUEPRINT:'
 
-    header_end = str_blueprint.index('"')
-    header = str_blueprint[10..header_end - 1]
-    header_segments = header.split(',')
-
     blueprint = BlueprintData.new
+    header_segments = get_header_segments(str_blueprint)
 
     blueprint.icon_layout = header_segments[1].to_i
     blueprint.icon0 = header_segments[2].to_i
@@ -39,13 +36,7 @@ module DspBlueprintParser
     blueprint.short_description = CGI.unescape(header_segments[10])
     blueprint.description = CGI.unescape(header_segments[11])
 
-    blueprint_end = str_blueprint[header_end + 1..-1].index('"') + header_end + 1
-    blueprint_compressed = str_blueprint[header_end + 1..blueprint_end - 1]
-
-    gz = Zlib::GzipReader.new(StringIO.new(Base64.decode64(blueprint_compressed)))
-    blueprint_decompressed = gz.each_byte.to_a
-
-    reader = BinaryReader.new(blueprint_decompressed)
+    reader = get_reader(str_blueprint)
 
     blueprint.version = reader.read_i32
     blueprint.cursor_offset_x = reader.read_i32
@@ -55,10 +46,7 @@ module DspBlueprintParser
     blueprint.drag_box_size_y = reader.read_i32
     blueprint.primary_area_idx = reader.read_i32
 
-    area_length = reader.read_i8
-    blueprint.areas = Array.new
-
-    while area_length > 0
+    reader.read_i8.times do
       area = Area.new
       area.index = reader.read_i8
       area.parent_index = reader.read_i8
@@ -70,13 +58,9 @@ module DspBlueprintParser
       area.height = reader.read_i16
 
       blueprint.areas << area
-      area_length -= 1
     end
 
-    building_length = reader.read_i32
-    blueprint.buildings = Array.new
-
-    while building_length > 0
+    reader.read_i32.times do
       building = Building.new
       building.index = reader.read_i32
       building.area_index = reader.read_i8
@@ -101,19 +85,15 @@ module DspBlueprintParser
       building.recipe_id = reader.read_i16
       building.filter_fd = reader.read_i16
 
-      param_length = reader.read_i16
-      building.parameters = Array.new
-
-      while param_length > 0
+      reader.read_i16.times do
         building.parameters << reader.read_i32
-        param_length -= 1
       end
 
       blueprint.buildings << building
-      building_length -= 1
     end
 
     binding.pry
+    blueprint
   end
 
   # @param ticks [Integer]
@@ -123,5 +103,28 @@ module DspBlueprintParser
     seconds = ticks / 10_000_000
 
     Time.at(seconds - SECONDS_AT_EPOC)
+  end
+
+  private
+
+  # @param str_blueprint [String]
+  # @return [Array<String>]
+  def self.get_header_segments(str_blueprint)
+    header_end = str_blueprint.index('"')
+    header = str_blueprint[10..header_end - 1]
+    header.split(',')
+  end
+
+  # @param str_blueprint [String]
+  # @return [BinaryReader]
+  def self.get_reader(str_blueprint)
+    header_end = str_blueprint.index('"')
+    blueprint_end = str_blueprint[header_end + 1..-1].index('"') + header_end
+    blueprint_compressed = str_blueprint[header_end + 1..blueprint_end]
+
+    gz = Zlib::GzipReader.new(StringIO.new(Base64.decode64(blueprint_compressed)))
+    blueprint_decompressed = gz.each_byte.to_a
+
+    BinaryReader.new(blueprint_decompressed)
   end
 end
