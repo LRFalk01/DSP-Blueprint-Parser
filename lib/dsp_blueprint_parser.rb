@@ -9,6 +9,7 @@ require_relative "dsp_blueprint_parser/blueprint_data"
 require_relative "dsp_blueprint_parser/icon_layout"
 require_relative "dsp_blueprint_parser/area"
 require_relative "dsp_blueprint_parser/building"
+require_relative 'dsp_blueprint_parser/binary_reader'
 
 module DspBlueprintParser
   SECONDS_AT_EPOC = 62135596800.freeze
@@ -43,6 +44,35 @@ module DspBlueprintParser
 
     gz = Zlib::GzipReader.new(StringIO.new(Base64.decode64(blueprint_compressed)))
     blueprint_decompressed = gz.each_byte.to_a
+
+    reader = BinaryReader.new(blueprint_decompressed)
+
+    blueprint.version = reader.read_i32
+    blueprint.cursor_offset_x = reader.read_i32
+    blueprint.cursor_offset_y = reader.read_i32
+    blueprint.cursor_target_area = reader.read_i32
+    blueprint.drag_box_size_x = reader.read_i32
+    blueprint.drag_box_size_y = reader.read_i32
+    blueprint.primary_area_idx = reader.read_i32
+
+    area_length = reader.read_i8
+    area_index = 0
+    blueprint.areas = Array.new
+
+    while area_index < area_length
+      area = Area.new
+      area.index = reader.read_i8
+      area.parent_index = reader.read_i8
+      area.tropic_anchor = reader.read_i16
+      area.area_segments = reader.read_i16
+      area.anchor_local_offset_x = reader.read_i16
+      area.anchor_local_offset_y = reader.read_i16
+      area.width = reader.read_i16
+      area.height = reader.read_i16
+
+      blueprint.areas[area_index] = area
+      area_index += 1
+    end
 
     binding.pry
   end
