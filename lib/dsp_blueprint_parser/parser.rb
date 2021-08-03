@@ -7,22 +7,29 @@ module DspBlueprintParser
 
     # @param [String] str_blueprint
     def initialize(str_blueprint)
-      @str_blueprint = str_blueprint
+      @data_sections = DataSections.new(str_blueprint)
     end
 
     # @return [BlueprintData]
-    def parse
-      blueprint = BlueprintData.new
-      reader = get_reader(@str_blueprint)
-
-      parse_metadata(blueprint, @str_blueprint, reader)
-      parse_areas(blueprint, reader)
-      parse_buildings(blueprint, reader)
-
-      blueprint
+    def blueprint
+      @blueprint ||= BlueprintData.new.tap do |blueprint|
+        parse_metadata(blueprint)
+        parse_areas(blueprint)
+        parse_buildings(blueprint)
+      end
     end
 
     private
+
+    # @return [Array<String>]
+    def header_segments
+      @header_segments ||= @data_sections.header_segments
+    end
+
+    # @return [BinaryReader]
+    def reader
+      @reader ||= BinaryReader.new(@data_sections.decompressed_body)
+    end
 
     # @param ticks [Integer]
     # @return [Time]
@@ -33,30 +40,8 @@ module DspBlueprintParser
       Time.at(seconds - SECONDS_AT_EPOC)
     end
 
-    # @param str_blueprint [String]
-    # @return [Array<String>]
-    def get_header_segments(str_blueprint)
-      header_end = str_blueprint.index('"')
-      header = str_blueprint[10..header_end - 1]
-      header.split(',')
-    end
-
-    # @param str_blueprint [String]
-    # @return [BinaryReader]
-    def get_reader(str_blueprint)
-      header_end = str_blueprint.index('"')
-      blueprint_end = str_blueprint[header_end + 1..].index('"') + header_end
-      blueprint_compressed = str_blueprint[header_end + 1..blueprint_end]
-
-      gz = Zlib::GzipReader.new(StringIO.new(Base64.decode64(blueprint_compressed)))
-      blueprint_decompressed = gz.each_byte.to_a
-
-      BinaryReader.new(blueprint_decompressed)
-    end
-
     # @param [BlueprintData] blueprint
-    # @param [BinaryReader] reader
-    def parse_areas(blueprint, reader)
+    def parse_areas(blueprint)
       reader.read_i8.times do
         area = Area.new
         area.index = reader.read_i8
@@ -73,8 +58,7 @@ module DspBlueprintParser
     end
 
     # @param [BlueprintData] blueprint
-    # @param [BinaryReader] reader
-    def parse_buildings(blueprint, reader)
+    def parse_buildings(blueprint)
       reader.read_i32.times do
         building = Building.new
         building.index = reader.read_i32
@@ -109,11 +93,7 @@ module DspBlueprintParser
     end
 
     # @param [BlueprintData] blueprint
-    # @param [String] str_blueprint
-    # @param [BinaryReader] reader
-    def parse_metadata(blueprint, str_blueprint, reader)
-      header_segments = get_header_segments(str_blueprint)
-
+    def parse_metadata(blueprint)
       blueprint.icon_layout = header_segments[1].to_i
       blueprint.icon0 = header_segments[2].to_i
       blueprint.icon1 = header_segments[3].to_i
@@ -124,13 +104,8 @@ module DspBlueprintParser
       blueprint.time = ticks_to_epoch(header_segments[8].to_i)
       blueprint.game_version = header_segments[9]
 
-      if header_segments[10]
-        blueprint.short_description = CGI.unescape(header_segments[10])
-      end
-
-      if header_segments[11]
-        blueprint.description = CGI.unescape(header_segments[11])
-      end
+      blueprint.short_description = CGI.unescape(header_segments[10]) if header_segments[10]
+      blueprint.description = CGI.unescape(header_segments[11]) if header_segments[11]
 
       blueprint.version = reader.read_i32
       blueprint.cursor_offset_x = reader.read_i32

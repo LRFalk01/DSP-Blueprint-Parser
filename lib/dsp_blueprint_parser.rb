@@ -12,6 +12,7 @@ require_relative 'dsp_blueprint_parser/area'
 require_relative 'dsp_blueprint_parser/building'
 require_relative 'dsp_blueprint_parser/binary_reader'
 require_relative 'dsp_blueprint_parser/parser'
+require_relative 'dsp_blueprint_parser/data_sections'
 
 # module to receive a Dyson Sphere Program blueprint string and parse it
 module DspBlueprintParser
@@ -24,6 +25,6 @@ module DspBlueprintParser
     return unless str_blueprint.start_with? 'BLUEPRINT:'
 
     parser = Parser.new(str_blueprint)
-    parser.parse
+    parser.blueprint
   end
 end
