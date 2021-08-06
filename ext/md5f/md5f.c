@@ -119,7 +119,7 @@ uint * MD5_Append(unsigned char input[], size_t length)
     }
 
     unsigned char arrayList[num3 + 9 + length];
-    uint position = 0;
+    unsigned int position = 0;
 
     for (size_t i = 0; i < length; i++)
     {
@@ -137,14 +137,14 @@ uint * MD5_Append(unsigned char input[], size_t length)
     }
 
     long num5 = (long) length * 8L;
-    unsigned char num6 = (unsigned char) ((ulong) num5 & (ulong) 255);
-    unsigned char num7 = (unsigned char) ((ulong) num5 >> 8 & (ulong) 255);
-    unsigned char num8 = (unsigned char) ((ulong) num5 >> 16 & (ulong) 255);
-    unsigned char num9 = (unsigned char) ((ulong) num5 >> 24 & (ulong) 255);
-    unsigned char num10 = (unsigned char) ((ulong) num5 >> 32 & (ulong) 255);
-    unsigned char num11 = (unsigned char) ((ulong) num5 >> 40 & (ulong) 255);
-    unsigned char num12 = (unsigned char) ((ulong) num5 >> 48 & (ulong) 255);
-    unsigned char num13 = (unsigned char) ((ulong) num5 >> 56);
+    unsigned char num6 = (unsigned char) ((unsigned long) num5 & (unsigned long) 255);
+    unsigned char num7 = (unsigned char) ((unsigned long) num5 >> 8 & (unsigned long) 255);
+    unsigned char num8 = (unsigned char) ((unsigned long) num5 >> 16 & (unsigned long) 255);
+    unsigned char num9 = (unsigned char) ((unsigned long) num5 >> 24 & (unsigned long) 255);
+    unsigned char num10 = (unsigned char) ((unsigned long) num5 >> 32 & (unsigned long) 255);
+    unsigned char num11 = (unsigned char) ((unsigned long) num5 >> 40 & (unsigned long) 255);
+    unsigned char num12 = (unsigned char) ((unsigned long) num5 >> 48 & (unsigned long) 255);
+    unsigned char num13 = (unsigned char) ((unsigned long) num5 >> 56);
     arrayList[position++] = num6;
     arrayList[position++] = num7;
     arrayList[position++] = num8;
