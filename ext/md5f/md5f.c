@@ -124,13 +124,13 @@ uint * MD5_Append(unsigned char input[], size_t length)
     for (size_t i = 0; i < length; i++)
     {
         arrayList[position++] = input[i];
-    }    
+    }
 
     if (num1 == 1)
     {
         arrayList[position++] = (unsigned char) 128;
     }
-        
+
     for (int index = 0; index < num3; ++index)
     {
         arrayList[position++] = (unsigned char) 0;
@@ -266,7 +266,7 @@ unsigned char * MD5_Array(unsigned char input[])
         ++index1;
         index2 += 4;
     }
-    
+
     free(append);
     return numArray2;
 }
@@ -280,7 +280,7 @@ unsigned char * ArrayToHexString(unsigned char input[])
     {
         sprintf(result+2*i, "%.2X", input[i]);
     }
-    
+
     return result;
 }
 
@@ -293,7 +293,7 @@ unsigned char * Compute(unsigned char message[])
     return result;
 }
 
-// int main()   // define the main function  
+// int main()   // define the main function
 // {
 //     unsigned char input[18] = "very large string\0";
 //     unsigned char *hex = Compute(input);
