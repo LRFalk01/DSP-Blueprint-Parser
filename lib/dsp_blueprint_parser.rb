@@ -13,6 +13,7 @@ require_relative 'dsp_blueprint_parser/building'
 require_relative 'dsp_blueprint_parser/binary_reader'
 require_relative 'dsp_blueprint_parser/parser'
 require_relative 'dsp_blueprint_parser/data_sections'
+require_relative 'dsp_blueprint_parser/md5f'
 
 # module to receive a Dyson Sphere Program blueprint string and parse it
 module DspBlueprintParser
@@ -26,5 +27,10 @@ module DspBlueprintParser
 
     parser = Parser.new(str_blueprint)
     parser.blueprint
+  end
+
+  def self.hash(input)
+    md5 = Md5f.new
+    md5.compute(input)
   end
 end
