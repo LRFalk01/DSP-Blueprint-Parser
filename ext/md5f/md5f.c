@@ -309,7 +309,7 @@ VALUE rb_compute(VALUE self, VALUE str) {
     return result;
 }
 
-void Init_dsp_blueprint_parser()
+void Init_md5f()
 {
     MD5F = rb_define_module("MD5F");
     rb_define_module_function(MD5F, "compute", rb_compute, 1);
