@@ -31,7 +31,7 @@ module DspBlueprintParser
 
   # @param input [String]
   # @return [Boolean]
-  def self.valid?(input)
+  def self.is_valid?(input)
     sections = DataSections.new(input)
     hash = MD5F::compute(sections.hashed_string)
 
