@@ -39,6 +39,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
+Running `rake compile` requires `gem install rake-compiler` to build the md5f extension.
+
 Bug reports and pull requests are welcome on GitHub at https://github.com/LRFalk01/dsp_blueprint_parser.
 
 ## License

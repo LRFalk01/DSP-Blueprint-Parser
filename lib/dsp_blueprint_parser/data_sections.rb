@@ -18,6 +18,14 @@ module DspBlueprintParser
       @header_segments ||= @str_blueprint[10..@first_quote_loc - 1].split(',')
     end
 
+    def hashed_string
+      @str_blueprint[..@second_quote_loc]
+    end
+
+    def hash
+      @str_blueprint[@second_quote_loc + 2..-1]
+    end
+
     # @return [Array<Integer>] array of bytes, 0..255
     def decompressed_body
       @decompressed_body ||=
