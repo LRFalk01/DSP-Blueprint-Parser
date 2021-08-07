@@ -3,11 +3,6 @@
 #include <string.h>
 #include "ruby.h"
 
-typedef struct _node {
-  uint length;
-  uint *array;
-} node;
-
 uint A;
 uint B;
 uint C;

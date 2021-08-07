@@ -4,7 +4,7 @@ require 'date'
 require 'zlib'
 require 'stringio'
 require 'base64'
-require 'dsp_blueprint_parser/dsp_blueprint_parser'
+require 'md5f'
 
 require_relative 'dsp_blueprint_parser/version'
 require_relative 'dsp_blueprint_parser/blueprint_data'
