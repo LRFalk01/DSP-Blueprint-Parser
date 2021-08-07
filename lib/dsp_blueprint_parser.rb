@@ -30,8 +30,11 @@ module DspBlueprintParser
   end
 
   # @param input [String]
-  def self.hash(input)
-    length = MD5F::compute(input)
-    binding.pry
+  # @return [Boolean]
+  def self.valid?(input)
+    sections = DataSections.new(input)
+    hash = MD5F::compute(sections.hashed_string)
+
+    return sections.hash == hash
   end
 end

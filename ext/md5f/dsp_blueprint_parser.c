@@ -96,7 +96,6 @@ void MD5_Init()
 uint * MD5_Append(unsigned char input[], size_t length)
 {
     int num1 = 1;
-    // int length = input.Length;
     int num2 = length % 64;
     int num3;
     int num4 = 0;
@@ -308,7 +307,6 @@ VALUE rb_compute(VALUE self, VALUE str) {
     free(hex);
 
     return result;
-//    return rb_sprintf("String length: %ld", RSTRING_LEN(str));
 }
 
 void Init_dsp_blueprint_parser()
