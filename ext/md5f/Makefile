@@ -12,12 +12,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /C/Ruby30-x64/include/ruby-3.0.0
+topdir = /home/lrfalk01/.asdf/installs/ruby/3.0.0/include/ruby-3.0.0
 hdrdir = $(topdir)
-arch_hdrdir = /C/Ruby30-x64/include/ruby-3.0.0/x64-mingw32
+arch_hdrdir = /home/lrfalk01/.asdf/installs/ruby/3.0.0/include/ruby-3.0.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/C/Ruby30-x64
+prefix = $(DESTDIR)/home/lrfalk01/.asdf/installs/ruby/3.0.0
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -55,7 +55,7 @@ includedir = $(prefix)/include
 runstatedir = $(localstatedir)/run
 localstatedir = $(prefix)/var
 sharedstatedir = $(prefix)/com
-sysconfdir = $(DESTDIR)
+sysconfdir = $(prefix)/etc
 datadir = $(datarootdir)
 datarootdir = $(prefix)/share
 libexecdir = $(exec_prefix)/libexec
@@ -67,50 +67,50 @@ archdir = $(rubyarchdir)
 CC_WRAPPER = 
 CC = gcc
 CXX = g++
-LIBRUBY = lib$(RUBY_SO_NAME).dll.a
+LIBRUBY = $(LIBRUBY_SO)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
-LIBRUBYARG_SHARED = -l$(RUBY_SO_NAME)
-LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static $(MAINLIBS)
+LIBRUBYARG_SHARED = -Wl,-rpath,$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)
+LIBRUBYARG_STATIC = -Wl,-rpath,$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)-static $(MAINLIBS)
 empty =
 OUTFLAG = -o $(empty)
 COUTFLAG = -o $(empty)
 CSRCFLAG = $(empty)
 
-RUBY_EXTCONF_H = extconf.h
+RUBY_EXTCONF_H = 
 cflags   = $(optflags) $(debugflags) $(warnflags)
 cxxflags = 
-optflags = -O3 -fno-omit-frame-pointer
+optflags = -O3
 debugflags = -ggdb3
 warnflags = -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable
 cppflags = 
-CCDLFLAGS = 
-CFLAGS   = $(CCDLFLAGS) -O3 -fno-fast-math -fstack-protector-strong $(ARCH_FLAG)
+CCDLFLAGS = -fPIC
+CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
-DEFS     = -D_FILE_OFFSET_BITS=64
-CPPFLAGS = -DRUBY_EXTCONF_H=\"$(RUBY_EXTCONF_H)\" -D__USE_MINGW_ANSI_STDIO=1 -DFD_SETSIZE=2048 -D_WIN32_WINNT=0x0600 -D__MINGW_USE_VC2005_COMPAT $(DEFS) $(cppflags)
-CXXFLAGS = $(CCDLFLAGS) -march=x86-64 -mtune=generic -O2 -pipe $(ARCH_FLAG)
-ldflags  = -L. -pipe -s -fstack-protector-strong
-dldflags = -pipe -s -fstack-protector-strong -Wl,--enable-auto-image-base,--enable-auto-import $(DEFFILE) 
-ARCH_FLAG = -m64
+DEFS     = 
+CPPFLAGS =  -I/home/lrfalk01/.asdf/installs/ruby/3.0.0/include  $(DEFS) $(cppflags)
+CXXFLAGS = $(CCDLFLAGS)  $(ARCH_FLAG)
+ldflags  = -L. -L/home/lrfalk01/.asdf/installs/ruby/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic
+dldflags = -L/home/lrfalk01/.asdf/installs/ruby/3.0.0/lib  -Wl,--compress-debug-sections=zlib 
+ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CC) -shared
 LDSHAREDXX = $(CXX) -shared
-AR = x86_64-w64-mingw32-gcc-ar
-EXEEXT = .exe
+AR = gcc-ar
+EXEEXT = 
 
 RUBY_INSTALL_NAME = $(RUBY_BASE_NAME)
-RUBY_SO_NAME = x64-msvcrt-ruby300
-RUBYW_INSTALL_NAME = $(RUBYW_BASE_NAME)
+RUBY_SO_NAME = ruby
+RUBYW_INSTALL_NAME = 
 RUBY_VERSION_NAME = $(RUBY_BASE_NAME)-$(ruby_version)
 RUBYW_BASE_NAME = rubyw
 RUBY_BASE_NAME = ruby
 
-arch = x64-mingw32
-sitearch = x64-msvcrt
+arch = x86_64-linux
+sitearch = $(arch)
 ruby_version = 3.0.0
 ruby = $(bindir)/$(RUBY_BASE_NAME)
 RUBY = $(ruby)
-ruby_headers = $(hdrdir)/ruby.h $(hdrdir)/ruby/backward.h $(hdrdir)/ruby/ruby.h $(hdrdir)/ruby/defines.h $(hdrdir)/ruby/missing.h $(hdrdir)/ruby/intern.h $(hdrdir)/ruby/st.h $(hdrdir)/ruby/subst.h $(arch_hdrdir)/ruby/config.h $(RUBY_EXTCONF_H)
+ruby_headers = $(hdrdir)/ruby.h $(hdrdir)/ruby/backward.h $(hdrdir)/ruby/ruby.h $(hdrdir)/ruby/defines.h $(hdrdir)/ruby/missing.h $(hdrdir)/ruby/intern.h $(hdrdir)/ruby/st.h $(hdrdir)/ruby/subst.h $(arch_hdrdir)/ruby/config.h
 
 RM = rm -f
 RM_RF = $(RUBY) -run -e rm -- -rf
@@ -126,25 +126,25 @@ TOUCH = exit >
 
 preload = 
 libpath = . $(libdir)
-LIBPATH =  -L. -L$(libdir)
-DEFFILE = $(TARGET)-$(arch).def
+LIBPATH =  -L. -L$(libdir) -Wl,-rpath,$(libdir)
+DEFFILE = 
 
-CLEANFILES = mkmf.log $(DEFFILE)
+CLEANFILES = mkmf.log
 DISTCLEANFILES = 
 DISTCLEANDIRS = 
 
 extout = 
 extout_prefix = 
-target_prefix = 
+target_prefix = /dsp_blueprint_parser
 LOCAL_LIBS = 
-LIBS = $(LIBRUBYARG_SHARED)  -lshell32 -lws2_32 -liphlpapi -limagehlp -lshlwapi  
-ORIG_SRCS = md5f.c
+LIBS = $(LIBRUBYARG_SHARED)  -lm   -lc
+ORIG_SRCS = dsp_blueprint_parser.c
 SRCS = $(ORIG_SRCS) 
-OBJS = md5f.o
-HDRS = $(srcdir)/extconf.h
+OBJS = dsp_blueprint_parser.o
+HDRS = 
 LOCAL_HDRS = 
-TARGET = md5f
-TARGET_NAME = md5f
+TARGET = dsp_blueprint_parser
+TARGET_NAME = dsp_blueprint_parser
 TARGET_ENTRY = Init_$(TARGET_NAME)
 DLLIB = $(TARGET).so
 EXTSTATIC = 
@@ -155,8 +155,8 @@ BINDIR        = $(bindir)
 RUBYCOMMONDIR = $(sitedir)$(target_prefix)
 RUBYLIBDIR    = $(sitelibdir)$(target_prefix)
 RUBYARCHDIR   = $(sitearchdir)$(target_prefix)
-HDRDIR        = $(sitehdrdir)$(target_prefix)
-ARCHHDRDIR    = $(sitearchhdrdir)$(target_prefix)
+HDRDIR        = $(rubyhdrdir)/ruby$(target_prefix)
+ARCHHDRDIR    = $(rubyhdrdir)/$(arch)/ruby$(target_prefix)
 TARGET_SO_DIR =
 TARGET_SO     = $(TARGET_SO_DIR)$(DLLIB)
 CLEANLIBS     = $(TARGET_SO) 
@@ -186,7 +186,7 @@ distclean: clean distclean-so distclean-static distclean-rb-default distclean-rb
 realclean: distclean
 install: install-so install-rb
 
-install-so: $(DLLIB) $(TIMESTAMP_DIR)/.sitearchdir.time
+install-so: $(DLLIB) $(TIMESTAMP_DIR)/.sitearchdir.-.dsp_blueprint_parser.time
 	$(INSTALL_PROG) $(DLLIB) $(RUBYARCHDIR)
 clean-static::
 	-$(Q)$(RM) $(STATIC_LIB)
@@ -198,7 +198,7 @@ do-install-rb:
 do-install-rb-default:
 pre-install-rb-default:
 	@$(NULLCMD)
-$(TIMESTAMP_DIR)/.sitearchdir.time:
+$(TIMESTAMP_DIR)/.sitearchdir.-.dsp_blueprint_parser.time:
 	$(Q) $(MAKEDIRS) $(@D) $(RUBYARCHDIR)
 	$(Q) $(TOUCH) $@
 
@@ -256,15 +256,11 @@ site-install-rb: install-rb
 	$(ECHO) translating $(<)
 	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
-$(TARGET_SO): $(DEFFILE) $(OBJS) Makefile
-	$(ECHO) linking shared-object $(DLLIB)
+$(TARGET_SO): $(OBJS) Makefile
+	$(ECHO) linking shared-object dsp_blueprint_parser/$(DLLIB)
 	-$(Q)$(RM) $(@)
 	$(Q) $(LDSHARED) -o $@ $(OBJS) $(LIBPATH) $(DLDFLAGS) $(LOCAL_LIBS) $(LIBS)
 
 
-
-$(DEFFILE): 
-	$(ECHO) generating $(@)
-	$(Q) (echo EXPORTS && echo $(TARGET_ENTRY)) > $@
 
 $(OBJS): $(HDRS) $(ruby_headers)

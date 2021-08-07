@@ -4,6 +4,7 @@ require 'date'
 require 'zlib'
 require 'stringio'
 require 'base64'
+require 'dsp_blueprint_parser/dsp_blueprint_parser'
 
 require_relative 'dsp_blueprint_parser/version'
 require_relative 'dsp_blueprint_parser/blueprint_data'
@@ -13,7 +14,6 @@ require_relative 'dsp_blueprint_parser/building'
 require_relative 'dsp_blueprint_parser/binary_reader'
 require_relative 'dsp_blueprint_parser/parser'
 require_relative 'dsp_blueprint_parser/data_sections'
-require_relative 'dsp_blueprint_parser/md5f'
 
 # module to receive a Dyson Sphere Program blueprint string and parse it
 module DspBlueprintParser
@@ -29,8 +29,9 @@ module DspBlueprintParser
     parser.blueprint
   end
 
+  # @param input [String]
   def self.hash(input)
-    md5 = Md5f.new
-    md5.compute(input)
+    length = MD5F::compute(input)
+    binding.pry
   end
 end

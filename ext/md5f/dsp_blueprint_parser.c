@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ruby.h"
-#include <extconf.h>
 
 typedef struct _node {
   uint length;
@@ -246,10 +245,10 @@ void MD5_Trasform(uint x[])
     }
 }
 
-unsigned char * MD5_Array(unsigned char input[])
+unsigned char * MD5_Array(unsigned char input[], long length)
 {
     MD5_Init();
-    uint *append = MD5_Append(input, strlen(input)); //todo length
+    uint *append = MD5_Append(input, length);
     MD5_Trasform(append);
     uint numArray1[4] = { A, B, C, D};
 
@@ -284,38 +283,36 @@ unsigned char * ArrayToHexString(unsigned char input[])
     return result;
 }
 
-unsigned char * Compute(unsigned char message[])
+unsigned char * Compute(unsigned char message[], long length)
 {
-    unsigned char * data = MD5_Array(message);
+    unsigned char * data = MD5_Array(message, length);
     unsigned char * result = ArrayToHexString(data);
 
     free(data);
     return result;
 }
 
-// int main()   // define the main function
-// {
-//     unsigned char input[18] = "very large string\0";
-//     unsigned char *hex = Compute(input);
-//     for (size_t i = 0; i < 32; i++)
-//     {
-//         printf("%C", hex[i]);
-//     }
-
-//     free(hex);
-// }
-
 VALUE MD5F = Qnil;  /* Ruby Module */
 
-VALUE rb_print_length(VALUE self, VALUE str) {
-    if (RB_TYPE_P(str, T_STRING) == 1) {
-        return rb_sprintf("String length: %ld", RSTRING_LEN(str));
+VALUE rb_compute(VALUE self, VALUE str) {
+    if (RB_TYPE_P(str, T_STRING) != 1) {
+        return Qnil;
     }
-    return Qnil;
+
+    unsigned char *data = StringValuePtr(str);
+    long strLength = RSTRING_LEN(str);
+
+    unsigned char *hex = Compute(data, strLength);
+
+    VALUE result = rb_str_new(hex, 32);
+    free(hex);
+
+    return result;
+//    return rb_sprintf("String length: %ld", RSTRING_LEN(str));
 }
 
-void Init_foobar()
+void Init_dsp_blueprint_parser()
 {
     MD5F = rb_define_module("MD5F");
-    rb_define_method(MD5F, "print_length", rb_print_length, 1);
+    rb_define_module_function(MD5F, "compute", rb_compute, 1);
 }

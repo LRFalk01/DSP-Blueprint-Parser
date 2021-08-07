@@ -1,7 +1,7 @@
 
 module DspBlueprintParser
   # class to generate DSP custom MD5F hash
-  class Md5f
+  class Md5fOld
     @a
     @b
     @c

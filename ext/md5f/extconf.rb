@@ -1,3 +1,3 @@
 require 'mkmf'
-create_header
-create_makefile 'md5f'
+
+create_makefile 'dsp_blueprint_parser/dsp_blueprint_parser'
