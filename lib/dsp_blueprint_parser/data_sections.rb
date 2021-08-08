@@ -8,7 +8,7 @@ module DspBlueprintParser
   class DataSections
     # @param str_blueprint [String]
     def initialize(str_blueprint)
-      @str_blueprint = str_blueprint
+      @str_blueprint = str_blueprint.strip
       @first_quote_loc = @str_blueprint.index('"')
       @second_quote_loc = @str_blueprint[(@first_quote_loc + 1)..].index('"') + @first_quote_loc
     end
