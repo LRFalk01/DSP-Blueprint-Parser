@@ -286,8 +286,6 @@ unsigned char * Compute(unsigned char message[], long length)
     return result;
 }
 
-VALUE MD5F = Qnil;  /* Ruby Module */
-
 VALUE rb_compute(VALUE self, VALUE str) {
     if (RB_TYPE_P(str, T_STRING) != 1) {
         return Qnil;
@@ -303,6 +301,8 @@ VALUE rb_compute(VALUE self, VALUE str) {
 
     return result;
 }
+
+VALUE MD5F = Qnil;  /* Ruby Module */
 
 void Init_md5f()
 {
