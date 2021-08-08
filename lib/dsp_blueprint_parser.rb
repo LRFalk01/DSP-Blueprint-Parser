@@ -32,6 +32,9 @@ module DspBlueprintParser
   # @param input [String]
   # @return [Boolean]
   def self.is_valid?(input)
+    return false if input.size < 28
+    return false unless input.start_with? 'BLUEPRINT:'
+
     sections = DataSections.new(input)
     hash = MD5F::compute(sections.hashed_string)
 
