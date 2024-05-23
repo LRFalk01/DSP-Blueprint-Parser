@@ -1,4 +1,4 @@
-#include<stdio.h> // define the header file  
+#include <stdio.h> // define the header file
 #include <stdlib.h>
 #include <string.h>
 #include "ruby.h"
@@ -26,7 +26,7 @@ const int S43 = 15;
 const int S44 = 21;
 
 // ugly, I know
-uint ArrayLength = 0;
+size_t ArrayLength = 0;
 
 uint F(uint x, uint y, uint z)
 {
@@ -88,12 +88,12 @@ void MD5_Init()
     D = 271734598U;
 }
 
-uint * MD5_Append(unsigned char input[], size_t length)
+uint * MD5_Append(char* input, size_t length)
 {
-    int num1 = 1;
-    int num2 = length % 64;
-    int num3;
-    int num4 = 0;
+    size_t num1 = 1;
+    size_t num2 = length % 64;
+    size_t num3;
+    size_t num4 = 0;
     if (num2 < 56)
     {
         num3 = 55 - num2;
@@ -124,7 +124,7 @@ uint * MD5_Append(unsigned char input[], size_t length)
         arrayList[position++] = (unsigned char) 128;
     }
 
-    for (int index = 0; index < num3; ++index)
+    for (size_t index = 0; index < num3; ++index)
     {
         arrayList[position++] = (unsigned char) 0;
     }
@@ -148,7 +148,7 @@ uint * MD5_Append(unsigned char input[], size_t length)
     arrayList[position++] = num13;
 
     ArrayLength = num4 / 4;
-    uint *numArray = calloc(ArrayLength, sizeof(uint));
+    uint *numArray = calloc(ArrayLength, sizeof(size_t));
     long index1 = 0;
     long index2 = 0;
     for (; index1 < (long) num4; index1 += 4)
@@ -162,7 +162,7 @@ uint * MD5_Append(unsigned char input[], size_t length)
 
 void MD5_Trasform(uint x[])
 {
-    for (int index = 0; index < ArrayLength; index += 16)
+    for (size_t index = 0; index < ArrayLength; index += 16)
     {
         uint a = A;
         uint b = B;
@@ -239,7 +239,7 @@ void MD5_Trasform(uint x[])
     }
 }
 
-unsigned char * MD5_Array(unsigned char input[], long length)
+unsigned char * MD5_Array(char* input, long length)
 {
     MD5_Init();
     uint *append = MD5_Append(input, length);
@@ -264,12 +264,12 @@ unsigned char * MD5_Array(unsigned char input[], long length)
     return numArray2;
 }
 
-unsigned char * ArrayToHexString(unsigned char input[])
+char * ArrayToHexString(unsigned char * input)
 {
-    size_t length = 16;
-    unsigned char *result = calloc(length * 2, sizeof(unsigned char));
+    int length = 16;
+    char *result = calloc((length * 2) + 1, sizeof(char));
 
-    for (size_t i = 0; i < length; i++)
+    for (int i = 0; i < length; i++)
     {
         sprintf(result+2*i, "%.2X", input[i]);
     }
@@ -277,10 +277,10 @@ unsigned char * ArrayToHexString(unsigned char input[])
     return result;
 }
 
-unsigned char * Compute(unsigned char message[], long length)
+char * Compute(char* message, long length)
 {
     unsigned char * data = MD5_Array(message, length);
-    unsigned char * result = ArrayToHexString(data);
+    char * result = ArrayToHexString(data);
 
     free(data);
     return result;
@@ -291,10 +291,10 @@ VALUE rb_compute(VALUE self, VALUE str) {
         return Qnil;
     }
 
-    unsigned char *data = StringValuePtr(str);
+    char *data = StringValuePtr(str);
     long strLength = RSTRING_LEN(str);
 
-    unsigned char *hex = Compute(data, strLength);
+    char *hex = Compute(data, strLength);
 
     VALUE result = rb_str_new(hex, 32);
     free(hex);
