@@ -5,6 +5,11 @@ RSpec.describe DspBlueprintParser do
     @blueprint = DspBlueprintParser.parse(File.read('spec/fixtures/blueprint.txt'))
   end
 
+  it 'minimally parses a sphere blueprint' do
+    sphere_blueprint = DspBlueprintParser.parse(File.read('spec/fixtures/sphere_blueprint.txt'))
+    expect(sphere_blueprint).to_not be_nil
+  end
+
   describe 'correct number of areas parsed' do
     subject { @blueprint }
     its(:areas) { is_expected.to all(be_a(DspBlueprintParser::Area)) }
