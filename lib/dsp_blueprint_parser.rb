@@ -23,7 +23,7 @@ module DspBlueprintParser
   # @return [BlueprintData]
   def self.parse(str_blueprint)
     return if str_blueprint.size < 28
-    return unless str_blueprint.start_with? 'BLUEPRINT:'
+    return unless str_blueprint.start_with? /[a-zA-Z]+:/
 
     parser = Parser.new(str_blueprint)
     parser.blueprint
@@ -33,7 +33,7 @@ module DspBlueprintParser
   # @return [Boolean]
   def self.is_valid?(input)
     return false if input.size < 28
-    return false unless input.start_with? 'BLUEPRINT:'
+    return false unless input.start_with? /[a-zA-Z]+:/
 
     sections = DataSections.new(input)
     hash = MD5F::compute(sections.hashed_string)
