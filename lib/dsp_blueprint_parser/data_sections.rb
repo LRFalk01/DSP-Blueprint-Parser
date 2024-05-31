@@ -9,13 +9,14 @@ module DspBlueprintParser
     # @param str_blueprint [String]
     def initialize(str_blueprint)
       @str_blueprint = str_blueprint.strip
+      @blueprint_type_loc = @str_blueprint.index(':')
       @first_quote_loc = @str_blueprint.index('"')
       @second_quote_loc = @str_blueprint[(@first_quote_loc + 1)..].index('"') + @first_quote_loc + 1
     end
 
     # @return [Array<String>]
     def header_segments
-      @header_segments ||= @str_blueprint[10..@first_quote_loc - 1].split(',')
+      @header_segments ||= @str_blueprint[@blueprint_type_loc..@first_quote_loc - 1].split(',')
     end
 
     def hashed_string
