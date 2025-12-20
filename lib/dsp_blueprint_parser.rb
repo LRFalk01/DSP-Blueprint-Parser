@@ -13,6 +13,7 @@ require_relative 'dsp_blueprint_parser/area'
 require_relative 'dsp_blueprint_parser/building'
 require_relative 'dsp_blueprint_parser/binary_reader'
 require_relative 'dsp_blueprint_parser/parser'
+require_relative 'dsp_blueprint_parser/building_parser'
 require_relative 'dsp_blueprint_parser/data_sections'
 
 BLUEPRINT_TYPE = /(BLUEPRINT|DYBP):/

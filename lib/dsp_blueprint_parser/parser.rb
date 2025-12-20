@@ -59,37 +59,7 @@ module DspBlueprintParser
 
     # @param [BlueprintData] blueprint
     def parse_buildings(blueprint)
-      reader.read_i32.times do
-        building = Building.new
-        building.index = reader.read_i32
-        building.area_index = reader.read_i8
-        building.local_offset_x = reader.read_single
-        building.local_offset_y = reader.read_single
-        building.local_offset_z = reader.read_single
-        building.local_offset_x2 = reader.read_single
-        building.local_offset_y2 = reader.read_single
-        building.local_offset_z2 = reader.read_single
-        building.yaw = reader.read_single
-        building.yaw2 = reader.read_single
-        building.item_id = reader.read_i16
-        building.model_index = reader.read_i16
-        building.temp_output_obj_idx = reader.read_i32
-        building.temp_input_obj_idx = reader.read_i32
-        building.output_to_slot = reader.read_i8
-        building.input_from_slot = reader.read_i8
-        building.output_from_slot = reader.read_i8
-        building.input_to_slot = reader.read_i8
-        building.output_offset = reader.read_i8
-        building.input_offset = reader.read_i8
-        building.recipe_id = reader.read_i16
-        building.filter_fd = reader.read_i16
-
-        reader.read_i16.times do
-          building.parameters << reader.read_i32
-        end
-
-        blueprint.buildings << building
-      end
+      BuildingParser.process!(blueprint, reader)
     end
 
     # @param [BlueprintData] blueprint
