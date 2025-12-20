@@ -37,6 +37,18 @@ module DspBlueprintParser
     # @return [Float]
     attr_accessor :yaw2
 
+    # @return [Float]
+    attr_accessor :tilt
+
+    # @return [Float]
+    attr_accessor :tilt2
+
+    # @return [Float]
+    attr_accessor :pitch
+
+    # @return [Float]
+    attr_accessor :pitch2
+
     # @return [Integer]
     attr_accessor :item_id
 
