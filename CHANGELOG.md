@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.1] 2025-12-22
+
+- Version bump to fix published gem.
+
 ## [0.2.0] 2025-12-20
 
 - Add support for new building metadata.
