@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.2] 2025-12-22
+
+- Quit including `.so` file in published gem.
+
 ## [0.2.1] 2025-12-22
 
 - Version bump to fix published gem.
