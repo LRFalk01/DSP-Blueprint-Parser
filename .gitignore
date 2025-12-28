@@ -13,3 +13,4 @@
 
 # rspec failure tracking
 *.so
+*.gem
