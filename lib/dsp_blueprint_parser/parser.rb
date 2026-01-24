@@ -4,6 +4,7 @@ module DspBlueprintParser
   # class to orchestrate parsing
   class Parser
     SECONDS_AT_EPOC = 62_135_596_800
+    URI_PARSER = URI::Parser.new.freeze
 
     # @param [String] str_blueprint
     def initialize(str_blueprint)
@@ -64,6 +65,8 @@ module DspBlueprintParser
 
     # @param [BlueprintData] blueprint
     def parse_metadata(blueprint)
+      header_version = header_segments[0].gsub(':', '').to_i
+
       blueprint.icon_layout = header_segments[1].to_i
       blueprint.icon0 = header_segments[2].to_i
       blueprint.icon1 = header_segments[3].to_i
@@ -74,8 +77,16 @@ module DspBlueprintParser
       blueprint.time = ticks_to_epoch(header_segments[8].to_i)
       blueprint.game_version = header_segments[9]
 
-      blueprint.short_description = CGI.unescape(header_segments[10]) if header_segments[10]
-      blueprint.description = CGI.unescape(header_segments[11]) if header_segments[11]
+      blueprint.short_description = uri_unescape(header_segments[10])
+
+      if header_version >= 1
+        blueprint.author = uri_unescape(header_segments[11])
+        blueprint.custom_version = uri_unescape(header_segments[12])
+        blueprint.attributes = uri_unescape(header_segments[13])&.split(';')
+        blueprint.description = uri_unescape(header_segments[14])
+      elsif header_segments[11]
+        blueprint.description = uri_unescape(header_segments[11])
+      end
 
       blueprint.version = reader.read_i32
       blueprint.cursor_offset_x = reader.read_i32
@@ -84,6 +95,14 @@ module DspBlueprintParser
       blueprint.drag_box_size_x = reader.read_i32
       blueprint.drag_box_size_y = reader.read_i32
       blueprint.primary_area_idx = reader.read_i32
+    end
+
+    # @param input [String, nil]
+    # @return [String, nil]
+    def uri_unescape(input)
+      return nil if input.nil?
+
+      URI_PARSER.unescape(input)
     end
   end
 end

@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.3] 2026-01-24
+
+- Handle new header datapoints.
+
 ## [0.2.2] 2025-12-22
 
 - Quit including `.so` file in published gem.
