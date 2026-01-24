@@ -65,5 +65,14 @@ module DspBlueprintParser
 
     # @return [Integer]
     attr_accessor :version
+
+    # @return [String, nil]
+    attr_accessor :custom_version
+
+    # @return [String, nil]
+    attr_accessor :author
+
+    # @return [Array<String>, nil]
+    attr_accessor :attributes
   end
 end
